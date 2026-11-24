@@ -46,4 +46,5 @@ ${js}
 `;
 const out = path.join(root, 'MAPP Lab Simulator.html');
 fs.writeFileSync(out, html);
+fs.writeFileSync(path.join(root, 'index.html'), html); // GitHub Pages entry point
 console.log('wrote', out, (html.length / 1024).toFixed(0) + ' KB,', Object.keys(files).length, 'sample files');
