@@ -51,10 +51,8 @@ const App = {
     else { this.machine.image && this.machine.powerOn(); this.machine.state = 'off'; }
   },
   openCoach(tab) { G.Coach.open(tab); },
-  async resetLab(all) {
-    const r = all
-      ? await msgBox('Reset Files', 'Reset all files to their original state?\n\nEvery file you created, edited, copied or deleted on C: and D: (including D:\\MAPP Programs and your project) goes back to how it was at the start. This cannot be undone.', 'warn', 'yesno')
-      : await msgBox('MAPP', 'Restore fresh copies of all MAPP Programs?\n\nThis deletes every change you made under D:\\MAPP Programs (and any copied Lab folders), exactly like the MAPP icon on the lab PCs.', 'warn', 'yesno');
+  async resetLab() {
+    const r = await msgBox('Reset Files', 'Reset all files to their original state?\n\nEvery file you created, edited, copied or deleted on C: and D: (including D:\\MAPP Programs and your project) goes back to how it was at the start. This cannot be undone.', 'warn', 'yesno');
     if (r !== 'yes') return;
     if (G.UV.w) { G.UV.tabs.slice().forEach(t => { t.saved = t.ed.value; }); await G.UV.closeProject(); }
     for (const w of [...WM.wins.values()]) if (w.id.startsWith('np:')) w.close(true);
@@ -62,7 +60,7 @@ const App = {
     try { Object.keys(localStorage).filter(k => k.startsWith('mappsim.uv.')).forEach(k => localStorage.removeItem(k)); } catch (e) { }
     this.vfs.changed('D:\\MAPP Programs', 'write');
     this.vfs.changed('C:', 'write');
-    G.toast(all ? 'All files reset to their original state' : 'Fresh copies of MAPP Programs restored');
+    G.toast('All files reset to their original state');
   },
 };
 
@@ -97,8 +95,7 @@ function desktop() {
     { name: 'MAPP Board', icon: I.board, run: () => G.Board.open() },
     { name: 'Tera Term', icon: I.term, run: () => G.TeraTerm.open() },
     { name: 'Lab Test Practice', icon: I.lab, run: () => G.Coach.open() },
-    { name: 'MAPP', icon: I.mapp, run: () => App.resetLab(), title: 'Restore fresh copies of MAPP Programs (like the lab PCs)' },
-    { name: 'Reset Files', icon: I.reset, run: () => App.resetLab(true), title: 'Reset all files (C: and D:) to their original state' },
+    { name: 'Reset Files', icon: I.reset, run: () => App.resetLab(), title: 'Reset all files (C: and D:) to their original state' },
   ];
   const icons = h('div.desk-icons');
   apps.forEach(a => {

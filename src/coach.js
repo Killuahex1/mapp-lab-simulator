@@ -359,7 +359,7 @@ const Coach = {
 <h3>What is simulated</h3>
 <p>Your code is really compiled (C/C++ subset of Arm Compiler 6 with the same kind of error messages, include-file lookup and linker errors such as <i>L6218E Undefined symbol</i> and <i>L6200E multiply defined</i>), then run against a pin-level model of the STM32F103RB and the MAPP boards: the LCD is a real HD44780 controller driven by your <code>lcd_utilities.cpp</code> bit by bit, the keypad is a 74C922 encoder, and the 7-segment display uses persistence of vision.</p>
 <p><b>Limits:</b> register-level code (RCC/EXTI/TIM registers) compiles but the peripherals are not simulated; UART (BufferedSerial), the debugger, structs/classes and dynamic memory are not supported.</p>
-<p>The desktop <b>MAPP</b> icon restores fresh copies of all files, just like the lab PCs.</p>` });
+<p>The desktop <b>Reset Files</b> icon puts every file back to its original state.</p>` });
   },
 };
 function escH(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }

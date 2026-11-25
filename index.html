@@ -5408,7 +5408,7 @@ const Coach = {
 <h3>What is simulated</h3>
 <p>Your code is really compiled (C/C++ subset of Arm Compiler 6 with the same kind of error messages, include-file lookup and linker errors such as <i>L6218E Undefined symbol</i> and <i>L6200E multiply defined</i>), then run against a pin-level model of the STM32F103RB and the MAPP boards: the LCD is a real HD44780 controller driven by your <code>lcd_utilities.cpp</code> bit by bit, the keypad is a 74C922 encoder, and the 7-segment display uses persistence of vision.</p>
 <p><b>Limits:</b> register-level code (RCC/EXTI/TIM registers) compiles but the peripherals are not simulated; UART (BufferedSerial), the debugger, structs/classes and dynamic memory are not supported.</p>
-<p>The desktop <b>MAPP</b> icon restores fresh copies of all files, just like the lab PCs.</p>` });
+<p>The desktop <b>Reset Files</b> icon puts every file back to its original state.</p>` });
   },
 };
 function escH(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
@@ -5470,10 +5470,8 @@ const App = {
     else { this.machine.image && this.machine.powerOn(); this.machine.state = 'off'; }
   },
   openCoach(tab) { G.Coach.open(tab); },
-  async resetLab(all) {
-    const r = all
-      ? await msgBox('Reset Files', 'Reset all files to their original state?\n\nEvery file you created, edited, copied or deleted on C: and D: (including D:\\MAPP Programs and your project) goes back to how it was at the start. This cannot be undone.', 'warn', 'yesno')
-      : await msgBox('MAPP', 'Restore fresh copies of all MAPP Programs?\n\nThis deletes every change you made under D:\\MAPP Programs (and any copied Lab folders), exactly like the MAPP icon on the lab PCs.', 'warn', 'yesno');
+  async resetLab() {
+    const r = await msgBox('Reset Files', 'Reset all files to their original state?\n\nEvery file you created, edited, copied or deleted on C: and D: (including D:\\MAPP Programs and your project) goes back to how it was at the start. This cannot be undone.', 'warn', 'yesno');
     if (r !== 'yes') return;
     if (G.UV.w) { G.UV.tabs.slice().forEach(t => { t.saved = t.ed.value; }); await G.UV.closeProject(); }
     for (const w of [...WM.wins.values()]) if (w.id.startsWith('np:')) w.close(true);
@@ -5481,7 +5479,7 @@ const App = {
     try { Object.keys(localStorage).filter(k => k.startsWith('mappsim.uv.')).forEach(k => localStorage.removeItem(k)); } catch (e) { }
     this.vfs.changed('D:\\MAPP Programs', 'write');
     this.vfs.changed('C:', 'write');
-    G.toast(all ? 'All files reset to their original state' : 'Fresh copies of MAPP Programs restored');
+    G.toast('All files reset to their original state');
   },
 };
 
@@ -5516,8 +5514,7 @@ function desktop() {
     { name: 'MAPP Board', icon: I.board, run: () => G.Board.open() },
     { name: 'Tera Term', icon: I.term, run: () => G.TeraTerm.open() },
     { name: 'Lab Test Practice', icon: I.lab, run: () => G.Coach.open() },
-    { name: 'MAPP', icon: I.mapp, run: () => App.resetLab(), title: 'Restore fresh copies of MAPP Programs (like the lab PCs)' },
-    { name: 'Reset Files', icon: I.reset, run: () => App.resetLab(true), title: 'Reset all files (C: and D:) to their original state' },
+    { name: 'Reset Files', icon: I.reset, run: () => App.resetLab(), title: 'Reset all files (C: and D:) to their original state' },
   ];
   const icons = h('div.desk-icons');
   apps.forEach(a => {

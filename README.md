@@ -9,7 +9,7 @@ It simulates the lab PC:
 - **Tera Term**: shows `printf()` output.
 - **Lab Test Practice**: ticks off each procedure step automatically and auto-marks Parts 1-3 plus the Challenging Drill on the downloaded program.
 
-The desktop **MAPP** icon restores fresh copies of all files, like on the lab PCs. Student work is saved in the browser's localStorage.
+The desktop **Reset Files** icon puts every file back to its original state. Student work is saved in the browser's localStorage.
 
 ## Developing
 - Sources are in `src/`. Rebuild the single HTML file with  
